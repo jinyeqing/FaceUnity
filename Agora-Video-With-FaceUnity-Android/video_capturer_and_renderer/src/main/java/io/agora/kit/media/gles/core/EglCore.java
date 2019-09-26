@@ -214,6 +214,10 @@ public final class EglCore {
         }
     }
 
+    public EGLContext getEGLContext() {
+        return mEGLContext;
+    }
+
     /**
      * Destroys the specified surface.  Note the EGLSurface won't actually be destroyed if it's
      * still current in a context.

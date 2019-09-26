@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ThemedSpinnerAdapter;
 
 import com.faceunity.FURenderer;
 import com.faceunity.encoder.MediaAudioEncoder;
@@ -87,7 +88,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
             mImageHeight = data.mFormat.getHeight();
             mImageWidth = data.mFormat.getWidth();
 
-            int fuTextureId = mFURenderer.onDrawFrame(data.mImage, data.mTextureId,
+            int fuTextureId = mFURenderer.onDrawFrame(data.mImage,data.mTextureId,
                     data.mFormat.getWidth(), data.mFormat.getHeight());
 
             sendRecordingData(fuTextureId, data.mTexMatrix, data.mTimeStamp / Constant.NANO_IN_ONE_MILLI_SECOND);
@@ -99,6 +100,7 @@ public class FUChatActivity extends FUBaseActivity implements RtcEngineEventHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initUIAndEvent();
+        Log.i("FURenderer", "main thread:" + Thread.currentThread().getId());
     }
 
     protected void initUIAndEvent() {

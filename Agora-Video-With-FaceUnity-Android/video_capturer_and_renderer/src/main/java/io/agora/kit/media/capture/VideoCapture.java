@@ -9,6 +9,7 @@ import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
 import android.opengl.EGLContext;
 import android.opengl.GLES20;
+import android.util.Log;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -20,13 +21,14 @@ import io.agora.kit.media.connector.SinkConnector;
 import io.agora.kit.media.connector.SrcConnector;
 import io.agora.kit.media.gles.core.EglCore;
 import io.agora.kit.media.gles.core.WindowSurface;
+import io.agora.kit.media.video.producers.VideoProducer;
 
 /**
  * Video Capture Device base class, defines a set of methods that native code
  * needs to use to configure, start capture, and to be reached by callbacks and
  * provides some necessary data type(s) with accessors.
  **/
-public abstract class VideoCapture implements SinkConnector<Integer> {
+public abstract class VideoCapture extends VideoProducer implements SinkConnector<Integer> {
     /**
      * Common class for storing a framerate range. Values should be multiplied by 1000.
      */
@@ -197,15 +199,19 @@ public abstract class VideoCapture implements SinkConnector<Integer> {
         VideoCaptureFrame frame = new VideoCaptureFrame(mCaptureFormat, mSurfaceTexture,
                 mTexId, mImage, texMatrix, timeMillis, mCameraNativeOrientation, mMirror);
 
-        int effectId = mSrcConnector.onDataAvailable(frame);
+//        int effectId = mSrcConnector.onDataAvailable(frame);
+//        Log.i("onFrameAvailable", "effect id=" + effectId);
+//
+//        if (!mNeedsPreview) {
+//            frame.mTextureId = mTexId;
+//            mTransmitConnector.onDataAvailable(frame);
+//        }
 
-        if (!mNeedsPreview) {
-            frame.mTextureId = effectId;
-            mTransmitConnector.onDataAvailable(frame);
-        }
+       pushVideoFrame(frame);
     }
 
     protected void prepareGlSurface(SurfaceTexture st, int width, int height) {
+        Log.i("prepareGlSurface", Thread.currentThread().getName());
         mEglCore = new EglCore(mEGLContext, 0);
 
         if (st != null) {

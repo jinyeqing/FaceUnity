@@ -178,7 +178,7 @@ public class WorkerThread extends Thread {
         if (mRtcEngine == null) {
             String appId = mContext.getString(R.string.agora_app_id);
             if (TextUtils.isEmpty(appId)) {
-                throw new RuntimeException("NEED TO use your App ID, get your own ID at https://dashboard.agora.io/");
+                throw new RuntimeException("NEED TO use your App ChannelID, get your own ChannelID at https://dashboard.agora.io/");
             }
 
             try {

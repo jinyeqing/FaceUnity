@@ -18,6 +18,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.agora.kit.media.constant.Constant;
 import io.agora.kit.media.gles.core.GlUtil;
+import io.agora.kit.media.video.VideoModule;
+import io.agora.kit.media.video.channels.VideoChannel;
 
 /**
  * Video Capture Device extension of VideoCapture to provide common functionality
@@ -79,7 +81,7 @@ public class VideoCaptureCamera
     }
 
     @Override
-    public boolean allocate(int width, int height, int frameRate, int facing) {
+    public boolean allocate(final int width, final int height, final int frameRate, final int facing) {
         Log.d(TAG, "allocate: requested width: " + width + " height: " + height + " fps: " + frameRate);
 
         mFacing = facing;
@@ -168,7 +170,7 @@ public class VideoCaptureCamera
                 chosenFpsRange[1] / 1000, ImageFormat.NV21);
         parameters.setPreviewSize(matchedWidth, matchedHeight);
         parameters.setPreviewFpsRange(chosenFpsRange[0], chosenFpsRange[1]);
-        parameters.setPreviewFormat(mCaptureFormat.mPixelFormat);
+        parameters.setPreviewFormat(mCaptureFormat.mFormat);
         try {
             mCamera.setParameters(parameters);
         } catch (RuntimeException ex) {
@@ -179,11 +181,12 @@ public class VideoCaptureCamera
         mCamera.setErrorCallback(new CaptureErrorCallback());
 
         mExpectedFrameSize = mCaptureFormat.mWidth * mCaptureFormat.mHeight
-                * ImageFormat.getBitsPerPixel(mCaptureFormat.mPixelFormat) / 8;
+                * ImageFormat.getBitsPerPixel(mCaptureFormat.mFormat) / 8;
         for (int i = 0; i < NUM_CAPTURE_BUFFERS; i++) {
             byte[] buffer = new byte[mExpectedFrameSize];
             mCamera.addCallbackBuffer(buffer);
         }
+
         return true;
     }
 
@@ -217,7 +220,7 @@ public class VideoCaptureCamera
             mPreviewBufferLock.unlock();
         }
 
-        setPreviewCallback(this);
+        setPreviewCallback(VideoCaptureCamera.this);
         try {
             mCamera.startPreview();
         } catch (RuntimeException ex) {

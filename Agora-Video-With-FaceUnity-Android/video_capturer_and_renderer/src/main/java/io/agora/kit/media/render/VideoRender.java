@@ -77,7 +77,6 @@ public class VideoRender implements SinkConnector<VideoCaptureFrame> {
                 VideoCaptureFrame frame = mVideoCaptureFrame;
                 try {
                     frame.mSurfaceTexture.updateTexImage();
-
                     frame.mSurfaceTexture.getTransformMatrix(mMTX);
                     frame.mTexMatrix = mMTX;
                 } catch (Exception e) {

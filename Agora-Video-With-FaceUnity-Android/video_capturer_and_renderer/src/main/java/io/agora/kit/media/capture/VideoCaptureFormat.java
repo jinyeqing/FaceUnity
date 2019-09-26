@@ -8,13 +8,13 @@ public class VideoCaptureFormat {
     protected int mWidth;
     protected int mHeight;
     protected int mFrameRate;
-    protected int mPixelFormat;
+    protected int mFormat;
 
-    public VideoCaptureFormat(int width, int height, int framerate, int pixelformat) {
+    public VideoCaptureFormat(int width, int height, int framerate, int format) {
         mWidth = width;
         mHeight = height;
         mFrameRate = framerate;
-        mPixelFormat = pixelformat;
+        mFormat = format;
     }
 
     public int getWidth() {
@@ -30,12 +30,16 @@ public class VideoCaptureFormat {
     }
 
     public int getPixelFormat() {
-        return mPixelFormat;
+        return mFormat;
+    }
+
+    public void setPixelFormat(int format) {
+        mFormat = format;
     }
 
     public String toString() {
         return "VideoCaptureFormat{" +
-                "mPixelFormat=" + mPixelFormat +
+                "mFormat=" + mFormat +
                 "mFrameRate=" + mFrameRate +
                 ", mWidth=" + mWidth +
                 ", mHeight=" + mHeight +

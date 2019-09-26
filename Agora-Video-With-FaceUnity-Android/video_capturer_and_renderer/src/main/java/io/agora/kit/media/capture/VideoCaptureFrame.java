@@ -34,6 +34,17 @@ public class VideoCaptureFrame {
         }
     }
 
+    public VideoCaptureFrame(VideoCaptureFrame frame) {
+        mFormat = frame.mFormat;
+        mTextureId = frame.mTextureId;
+        mImage = frame.mImage;
+        mTimeStamp = frame.mTimeStamp;
+        mRotation = frame.mRotation;
+        mSurfaceTexture = frame.mSurfaceTexture;
+        mMirror = frame.mMirror;
+        mTexMatrix = frame.mTexMatrix;
+    }
+
     public String toString() {
         return "VideoCaptureFrame{" +
                 "mFormat=" + mFormat +

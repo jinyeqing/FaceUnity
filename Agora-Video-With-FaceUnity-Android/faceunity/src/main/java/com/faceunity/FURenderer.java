@@ -443,7 +443,7 @@ public class FURenderer implements OnFUControlListener {
         }
         prepareDrawFrame();
 
-        int flags = mInputTextureType | mInputImageFormat;
+        int flags = mInputTextureType | mInputImageFormat | faceunity.FU_ADM_FLAG_TEXTURE_AND_READBACK_BUFFER_ROTATE_90;
         if (mCurrentCameraType != Camera.CameraInfo.CAMERA_FACING_FRONT)
             flags |= FU_ADM_FLAG_FLIP_X;
 

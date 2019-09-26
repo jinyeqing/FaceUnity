@@ -237,7 +237,6 @@ public class VideoCaptureCamera2 extends VideoCapture {
     private @CameraState int mCameraState = CameraState.STOPPED;
     private Surface mSurface;
 
-
     // Service function to grab CameraCharacteristics and handle exceptions.
     private CameraCharacteristics getCameraCharacteristics(String id) {
         try {
