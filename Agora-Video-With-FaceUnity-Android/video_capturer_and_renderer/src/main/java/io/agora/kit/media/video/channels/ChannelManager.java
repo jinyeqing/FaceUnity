@@ -1,17 +1,11 @@
 package io.agora.kit.media.video.channels;
 
-import android.util.Log;
-
 import io.agora.kit.media.video.comsumers.IVideoConsumer;
 import io.agora.kit.media.video.producers.IVideoProducer;
 
 public class ChannelManager {
     public static final String TAG = ChannelManager.class.getSimpleName();
     private static final int CHANNEL_COUNT = 3;
-
-    enum ConsumerType {
-        ON_SCREEN, OFF_SCREEN
-    }
 
     public static class ChannelID {
         public static final int CAMERA = 0;
@@ -32,26 +26,18 @@ public class ChannelManager {
 
     public VideoChannel connectProducer(IVideoProducer producer, int id) {
         ensureChannelState(id);
-        if (mChannels[id].connectProducer(producer) ==
-                VideoChannel.INFO_PRODUCER_EXIST) {
-            Log.i(TAG, "The producer has already connected");
-        }
-
+        mChannels[id].connectProducer(producer);
         return mChannels[id];
     }
 
-    public void disconnectProducer(IVideoProducer producer, int id) {
+    public void disconnectProducer(int id) {
         ensureChannelState(id);
-        mChannels[id].disconnectProducer(producer);
+        mChannels[id].disconnectProducer();
     }
 
     public VideoChannel connectConsumer(IVideoConsumer consumer, int id, int type) {
         ensureChannelState(id);
-        if (mChannels[id].connectConsumer(consumer, type) ==
-                VideoChannel.INFO_CONSUMER_EXIST) {
-            Log.i(TAG, "The consumer has already connected");
-        }
-
+        mChannels[id].connectConsumer(consumer, type);
         return mChannels[id];
     }
 

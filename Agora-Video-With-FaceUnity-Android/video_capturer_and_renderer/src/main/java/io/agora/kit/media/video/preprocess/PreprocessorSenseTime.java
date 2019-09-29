@@ -4,9 +4,9 @@ import android.content.Context;
 
 import io.agora.kit.media.capture.VideoCaptureFrame;
 
-public class SenseTimePreprocessor implements IPreprocessor {
+public class PreprocessorSenseTime implements IPreprocessor {
 
-    public SenseTimePreprocessor(Context context) {
+    public PreprocessorSenseTime(Context context) {
         initPreprocessor();
     }
 

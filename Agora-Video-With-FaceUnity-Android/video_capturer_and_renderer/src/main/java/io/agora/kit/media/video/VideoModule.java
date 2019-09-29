@@ -27,9 +27,9 @@ public class VideoModule {
         return mChannelManager.connectProducer(producer, id);
     }
 
-    public void disconnectProducer(IVideoProducer producer, int id) {
-        mChannelManager.disconnectProducer(producer, id);
-    }
+    //public void disconnectProducer(int id) {
+    //    mChannelManager.disconnectProducer(id);
+    //}
 
     public VideoChannel connectConsumer(IVideoConsumer consumer, int id, int type) {
         return mChannelManager.connectConsumer(consumer, id, type);

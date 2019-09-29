@@ -3,8 +3,6 @@ package io.agora.kit.media.video.producers;
 import android.content.Context;
 import android.opengl.GLES11Ext;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.ThemedSpinnerAdapter;
 
 import io.agora.kit.media.capture.VideoCaptureFrame;
 import io.agora.kit.media.video.VideoModule;
@@ -13,9 +11,9 @@ import io.agora.kit.media.video.preprocess.IPreprocessor;
 import io.agora.kit.media.video.preprocess.Preprocessor;
 
 public abstract class VideoProducer implements IVideoProducer {
-    protected Handler handler;
     protected VideoChannel videoChannel;
-    protected IPreprocessor mPreprocessor;
+    private Handler handler;
+    private IPreprocessor mPreprocessor;
 
     private Context mContext;
     private int mPreprocessorType = IPreprocessor.TYPE_NONE;
@@ -31,7 +29,6 @@ public abstract class VideoProducer implements IVideoProducer {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Log.i("VideoProducer", Thread.currentThread().getName());
                 frame.mFormat.setPixelFormat(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
                 final VideoCaptureFrame out =
                         new VideoCaptureFrame(frame);
@@ -46,7 +43,7 @@ public abstract class VideoProducer implements IVideoProducer {
                 }
 
                 if (videoChannel != null) {
-                    videoChannel.pushVideoFrame(frame);
+                    videoChannel.pushVideoFrame(out);
                 }
             }
         });
@@ -59,7 +56,7 @@ public abstract class VideoProducer implements IVideoProducer {
         }
 
         if (videoChannel != null) {
-            videoChannel.disconnectProducer(this);
+            videoChannel.disconnectProducer();
             videoChannel = null;
             handler = null;
         }

@@ -8,7 +8,6 @@ import android.opengl.GLES11Ext;
 import android.util.Log;
 
 import java.io.IOException;
-import java.security.Policy;
 
 import io.agora.kit.media.capture.VideoCaptureFormat;
 import io.agora.kit.media.capture.VideoCaptureFrame;
@@ -72,8 +71,7 @@ public class SampleCameraProducer extends VideoProducer implements Camera.Previe
     }
 
     private void initEgl() {
-        Log.i("VideoProducer","initEgl:"+videoChannel.getEGLContext().eglCore.getEGLContext());
-        mEglCore = new EglCore(videoChannel.getEGLContext().eglCore.getEGLContext(), 0);
+        mEglCore = new EglCore(videoChannel.getChannelContext().getEglCore().getEGLContext(), 0);
         mSurface = mEglCore.createOffscreenSurface(1, 1);
         mEglCore.makeCurrent(mSurface);
         mTextureId = GlUtil.createTextureObject(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);

@@ -7,6 +7,7 @@ import android.view.TextureView;
 import io.agora.kit.media.capture.VideoCaptureFrame;
 import io.agora.kit.media.video.VideoModule;
 import io.agora.kit.media.video.channels.ChannelManager;
+import io.agora.kit.media.video.channels.VideoChannel;
 
 public class SurfaceTextureConsumer implements IVideoConsumer, TextureView.SurfaceTextureListener {
     private static final String TAG = SurfaceTextureConsumer.class.getSimpleName();
@@ -19,7 +20,7 @@ public class SurfaceTextureConsumer implements IVideoConsumer, TextureView.Surfa
     }
 
     @Override
-    public void onConsumeFrame(VideoCaptureFrame frame, EglContextCore context) {
+    public void onConsumeFrame(VideoCaptureFrame frame, VideoChannel.ChannelContext context) {
 
     }
 

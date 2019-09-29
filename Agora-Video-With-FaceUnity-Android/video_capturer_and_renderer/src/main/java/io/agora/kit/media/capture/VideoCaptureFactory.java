@@ -48,10 +48,10 @@ public class VideoCaptureFactory {
 
     // Factory methods.
     public static VideoCapture createVideoCapture(Context context) {
-//        if (isLReleaseOrLater() && !isLegacyDevice(context)) {
-//            return new VideoCaptureCamera2(context);
-//        } else {
+        if (isLReleaseOrLater() && !isLegacyDevice(context)) {
+            return new VideoCaptureCamera2(context);
+        } else {
             return new VideoCaptureCamera(context);
-//        }
+        }
     }
 }
