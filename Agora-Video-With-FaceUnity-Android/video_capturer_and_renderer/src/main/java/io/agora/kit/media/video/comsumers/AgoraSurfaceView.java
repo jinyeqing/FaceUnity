@@ -7,6 +7,8 @@ import android.view.SurfaceView;
 import io.agora.kit.media.video.VideoModule;
 
 public class AgoraSurfaceView extends SurfaceView {
+    private SurfaceViewConsumer mConsumer;
+
     public AgoraSurfaceView(Context context) {
         super(context);
         init();
@@ -18,8 +20,8 @@ public class AgoraSurfaceView extends SurfaceView {
     }
 
     private void init() {
-        SurfaceViewConsumer consumer = new SurfaceViewConsumer(VideoModule.instance());
-        consumer.setSurfaceView(this);
-        getHolder().addCallback(consumer);
+        mConsumer = new SurfaceViewConsumer(VideoModule.instance());
+        mConsumer.setSurfaceView(this);
+        getHolder().addCallback(mConsumer);
     }
 }

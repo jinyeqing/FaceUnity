@@ -10,4 +10,15 @@ public interface IVideoConsumer {
     void onConsumeFrame(VideoCaptureFrame frame, ChannelContext context);
     void connectChannel(int channelId);
     void disconnectChannel(int channelId);
+
+    /**
+     * Give a chance for subclasses to return a drawing target
+     * object. This object can only be either a Surface or a
+     * SurfaceTexture.
+     * @return
+     */
+    Object onGetDrawingTarget();
+
+    int onMeasuredWidth();
+    int onMeasuredHeight();
 }

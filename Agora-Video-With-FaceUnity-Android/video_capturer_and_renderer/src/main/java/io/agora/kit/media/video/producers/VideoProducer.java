@@ -3,6 +3,7 @@ package io.agora.kit.media.video.producers;
 import android.content.Context;
 import android.opengl.GLES11Ext;
 import android.os.Handler;
+import android.util.Log;
 
 import io.agora.kit.media.capture.VideoCaptureFrame;
 import io.agora.kit.media.video.VideoModule;
@@ -26,6 +27,10 @@ public abstract class VideoProducer implements IVideoProducer {
 
     @Override
     public void pushVideoFrame(final VideoCaptureFrame frame) {
+        if (handler == null) {
+            return;
+        }
+
         handler.post(new Runnable() {
             @Override
             public void run() {
