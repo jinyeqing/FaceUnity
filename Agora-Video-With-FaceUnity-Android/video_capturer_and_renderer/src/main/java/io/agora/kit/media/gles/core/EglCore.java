@@ -327,6 +327,14 @@ public final class EglCore {
                 eglSurface.equals(EGL14.eglGetCurrentSurface(EGL14.EGL_DRAW));
     }
 
+    public EGLSurface getCurrentDrawingSurface() {
+        EGLSurface surface = null;
+        if (mEGLContext.equals(EGL14.eglGetCurrentContext())) {
+            surface = EGL14.eglGetCurrentSurface(EGL14.EGL_DRAW);
+        }
+        return surface;
+    }
+
     /**
      * Performs a simple surface query.
      */

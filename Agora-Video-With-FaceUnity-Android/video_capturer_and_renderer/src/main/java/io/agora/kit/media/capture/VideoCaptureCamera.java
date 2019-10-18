@@ -18,8 +18,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.agora.kit.media.constant.Constant;
 import io.agora.kit.media.gles.core.GlUtil;
-import io.agora.kit.media.video.VideoModule;
-import io.agora.kit.media.video.channels.VideoChannel;
 
 /**
  * Video Capture Device extension of VideoCapture to provide common functionality

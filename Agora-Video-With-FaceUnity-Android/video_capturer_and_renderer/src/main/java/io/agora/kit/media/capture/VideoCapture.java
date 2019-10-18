@@ -21,7 +21,7 @@ import io.agora.kit.media.connector.SinkConnector;
 import io.agora.kit.media.connector.SrcConnector;
 import io.agora.kit.media.gles.core.EglCore;
 import io.agora.kit.media.gles.core.WindowSurface;
-import io.agora.kit.media.video.producers.VideoProducer;
+import io.agora.kit.media.framework.producers.VideoProducer;
 
 /**
  * Video Capture Device base class, defines a set of methods that native code

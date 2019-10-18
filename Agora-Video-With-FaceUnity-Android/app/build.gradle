@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     implementation project(':faceunity')
-
+    implementation project(':sensetime')
     implementation project(':video_capturer_and_renderer')
 
     implementation 'com.wuyr:pathlayoutmanager:1.0.3'

@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import io.agora.kit.media.capture.VideoCapture;
 import io.agora.kit.media.capture.VideoCaptureFactory;
 import io.agora.kit.media.constant.Constant;
-import io.agora.kit.media.video.channels.ChannelManager;
-import io.agora.kit.media.video.comsumers.AgoraSurfaceView;
-import io.agora.kit.media.video.preprocess.IPreprocessor;
+import io.agora.kit.media.framework.VideoModule;
+import io.agora.kit.media.framework.channels.ChannelManager;
+import io.agora.kit.media.framework.comsumers.AgoraSurfaceView;
+import io.agora.kit.media.framework.comsumers.BaseWindowConsumer;
+import io.agora.kit.media.framework.preprocess.IPreprocessor;
 
 public class TestActivity extends Activity {
     private VideoCapture mVideoCapture;
@@ -25,17 +27,19 @@ public class TestActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
         mVideoCapture = VideoCaptureFactory.createVideoCapture(this);
-        mVideoCapture.allocate(1280, 1920, 24, Constant.CAMERA_FACING_FRONT);
-        mVideoCapture.addPreprocessor(this, IPreprocessor.TYPE_FACE_UNITY);
+        mVideoCapture.allocate(640, 480, 24, Constant.CAMERA_FACING_FRONT);
+        mVideoCapture.setContext(this);
         mVideoCapture.startCaptureMaybeAsync(false);
         mVideoCapture.connectChannel(ChannelManager.ChannelID.CAMERA);
     }
 
     @Override
     public void onDestroy() {
+        Log.i("TestActivity", "onDestroy");
         mVideoCapture.disconnect();
         mVideoCapture.stopCaptureAndBlockUntilStopped();
         mVideoCapture.deallocate();
+        //VideoModule.instance().stopChannel(ChannelManager.ChannelID.CAMERA);
         super.onDestroy();
     }
 }
