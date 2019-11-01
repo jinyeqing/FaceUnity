@@ -100,6 +100,7 @@ public class STRenderer {
     private float mCurrentFilterStrength = 0.65f;  // ranges of [0,1]
     private float mFilterStrength = 0.65f;
     private String mFilterStyle;
+    private boolean mNeedFilterOutputBuffer;
 
     // Makeup states
     // Records makeup package ids, makeup type as the index.
@@ -237,12 +238,12 @@ public class STRenderer {
                             mCurrentSticker = (String) msg.obj;
                             int result = mStStickerNative.changeSticker(mCurrentSticker);
                             LogUtils.i(TAG, "change sticker result: %d", result);
-                            setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
+                            // setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
                             break;
                         case MESSAGE_NEED_REMOVE_ALL_STICKERS:
                             mStStickerNative.removeAllStickers();
                             mCurrentSticker = null;
-                            setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
+                            // setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
                             break;
                         default:
                             break;
@@ -658,8 +659,7 @@ public class STRenderer {
                     }
 
                     // 如果需要输出buffer推流或其他，设置该开关为true
-                    boolean needOutputBuffer = false;
-                    if (!needOutputBuffer) {
+                    if (!mNeedFilterOutputBuffer) {
                         result = mStStickerNative.processTexture(processedTextureId, humanAction,
                                 orientation, STRotateType.ST_CLOCKWISE_ROTATE_270, mImageWidth, mImageHeight,
                                 false, inputParams, mTextureOutId[0]);
