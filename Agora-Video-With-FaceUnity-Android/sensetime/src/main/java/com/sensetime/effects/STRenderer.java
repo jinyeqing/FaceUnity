@@ -238,12 +238,12 @@ public class STRenderer {
                             mCurrentSticker = (String) msg.obj;
                             int result = mStStickerNative.changeSticker(mCurrentSticker);
                             LogUtils.i(TAG, "change sticker result: %d", result);
-                            // setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
+                            setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
                             break;
                         case MESSAGE_NEED_REMOVE_ALL_STICKERS:
                             mStStickerNative.removeAllStickers();
                             mCurrentSticker = null;
-                            // setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
+                            setHumanActionDetectConfig(mNeedBeautify, mStStickerNative.getTriggerAction());
                             break;
                         default:
                             break;
@@ -310,6 +310,10 @@ public class STRenderer {
             mDetectConfig = (config | STMobileHumanActionNative.ST_MOBILE_FACE_DETECT);
         } else {
             mDetectConfig = config;
+        }
+
+        if (mNeedMakeup) {
+            mDetectConfig = (config | STMobileHumanActionNative.ST_MOBILE_DETECT_EXTRA_FACE_POINTS);
         }
     }
 
