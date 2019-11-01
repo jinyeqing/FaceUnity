@@ -33,12 +33,12 @@ public class VideoChannel extends HandlerThread {
 
     private ChannelContext mContext;
     private EGLSurface mDummyEglSurface;
-    private EGLSurface mCurrentEglSurface;
 
-    VideoChannel(int id) {
+    VideoChannel(Context context, int id) {
         super(ChannelManager.ChannelID.toString(id));
         mChannelId = id;
         mContext = new ChannelContext();
+        mContext.setContext(context);
     }
 
     @Override
@@ -66,9 +66,7 @@ public class VideoChannel extends HandlerThread {
     }
 
     private void initPreprocessor() {
-        if (mContext != null && mContext.getContext() != null) {
-            mPreprocessor = Preprocessor.createPreprocessor(mContext.getContext());
-        }
+        mPreprocessor = Preprocessor.createPreprocessor(mContext.getContext());
     }
 
     private void release() {
@@ -80,6 +78,7 @@ public class VideoChannel extends HandlerThread {
     private void releasePreprocessor() {
         if (mPreprocessor != null) {
             mPreprocessor.releasePreprocessor();
+            mPreprocessor = null;
         }
     }
 
@@ -114,16 +113,16 @@ public class VideoChannel extends HandlerThread {
         return mContext;
     }
 
+    public IPreprocessor getPreprocessor() {
+        return mPreprocessor;
+    }
+
     void startChannel() {
         if (isRunning()) {
             return;
         }
         start();
         mHandler = new Handler(getLooper());
-    }
-
-    public void setContext(Context context) {
-        mContext.setContext(context);
     }
 
     public Handler getHandler() {
@@ -253,8 +252,8 @@ public class VideoChannel extends HandlerThread {
             return mContext;
         }
 
-        public void setContext(Context mContext) {
-            this.mContext = mContext;
+        public void setContext(Context context) {
+            this.mContext = context;
         }
 
         public EglCore getEglCore() {

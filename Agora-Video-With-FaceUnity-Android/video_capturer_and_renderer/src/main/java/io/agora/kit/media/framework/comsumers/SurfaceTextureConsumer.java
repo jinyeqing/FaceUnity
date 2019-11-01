@@ -68,7 +68,7 @@ public class SurfaceTextureConsumer extends BaseWindowConsumer implements Textur
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         Log.i(TAG, "onSurfaceTextureDestroyed");
         disconnectChannel(CHANNEL_ID);
-        shouldCreateDrawingSurface = true;
+        destroyed = true;
         return true;
     }
 

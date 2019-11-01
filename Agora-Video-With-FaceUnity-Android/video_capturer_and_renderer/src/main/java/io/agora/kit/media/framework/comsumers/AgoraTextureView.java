@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.TextureView;
 
 import io.agora.kit.media.framework.VideoModule;
-import io.agora.kit.media.framework.channels.ChannelManager;
 
 public class AgoraTextureView extends TextureView {
     private SurfaceTextureConsumer mConsumer;
@@ -21,8 +20,6 @@ public class AgoraTextureView extends TextureView {
     }
 
     private void init() {
-        VideoModule.instance().setContext(getContext().getApplicationContext(),
-                ChannelManager.ChannelID.CAMERA);
         mConsumer = new SurfaceTextureConsumer(VideoModule.instance());
         setSurfaceTextureListener(mConsumer);
     }

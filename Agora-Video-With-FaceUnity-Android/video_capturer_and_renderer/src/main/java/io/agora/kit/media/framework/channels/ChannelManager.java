@@ -3,6 +3,7 @@ package io.agora.kit.media.framework.channels;
 import android.content.Context;
 
 import io.agora.kit.media.framework.comsumers.IVideoConsumer;
+import io.agora.kit.media.framework.preprocess.IPreprocessor;
 import io.agora.kit.media.framework.producers.IVideoProducer;
 
 public class ChannelManager {
@@ -24,6 +25,13 @@ public class ChannelManager {
         }
     }
 
+    public ChannelManager(Context context) {
+        // The context should have no relation
+        // to any Activity or a Service instance.
+        mContext = context.getApplicationContext();
+    }
+
+    private Context mContext;
     private VideoChannel[] mChannels = new VideoChannel[CHANNEL_COUNT];
 
     public VideoChannel connectProducer(IVideoProducer producer, int id) {
@@ -49,13 +57,10 @@ public class ChannelManager {
     }
 
     private void ensureChannelState(int channelId) {
-        if (channelId < ChannelID.CAMERA || channelId > ChannelID.CUSTOM) {
-            throw new IllegalArgumentException(
-                    "[ChannelManager] wrong argument: Undefined channel id");
-        }
+        checkChannelId(channelId);
 
         if (mChannels[channelId] == null) {
-            mChannels[channelId] = new VideoChannel(channelId);
+            mChannels[channelId] = new VideoChannel(mContext, channelId);
         }
 
         if (!mChannels[channelId].isRunning()) {
@@ -64,10 +69,7 @@ public class ChannelManager {
     }
 
     public void stopChannel(int channelId) {
-        if (channelId < ChannelID.CAMERA || channelId > ChannelID.CUSTOM) {
-            throw new IllegalArgumentException(
-                    "[ChannelManager] wrong argument: Undefined channel id");
-        }
+        checkChannelId(channelId);
 
         if (mChannels[channelId] != null &&
                 mChannels[channelId].isRunning()) {
@@ -81,15 +83,15 @@ public class ChannelManager {
         mChannels[channelId].enableOffscreenMode(enable);
     }
 
-    public void setContext(Context context, int channelId) {
+    public IPreprocessor getPreprocessor(int channelId) {
+        checkChannelId(channelId);
+        return mChannels[channelId].getPreprocessor();
+    }
+
+    private void checkChannelId(int channelId) {
         if (channelId < ChannelID.CAMERA || channelId > ChannelID.CUSTOM) {
             throw new IllegalArgumentException(
                     "[ChannelManager] wrong argument: Undefined channel id");
         }
-
-        if (mChannels[channelId] == null) {
-            mChannels[channelId] = new VideoChannel(channelId);
-        }
-        mChannels[channelId].setContext(context);
     }
 }

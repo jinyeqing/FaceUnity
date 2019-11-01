@@ -45,4 +45,9 @@ public class PreprocessorFaceUnity implements IPreprocessor {
     public void releasePreprocessor() {
         mFURenderer.onSurfaceDestroyed();
     }
+
+    @Override
+    public Object getEffectRenderer() {
+        return mFURenderer;
+    }
 }

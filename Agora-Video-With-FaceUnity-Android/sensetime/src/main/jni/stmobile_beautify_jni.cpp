@@ -21,7 +21,7 @@ extern "C" {
                                                                                                   jint outputWidth, jint outputHeight, jint rotate, jobject humanActionInput, jint textureOut, jbyteArray outputArray,
                                                                                                   jint outputFormat, jobject humanActionOutput);
     JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STBeautifyNative_destroyBeautify(JNIEnv * env, jobject obj);
-};
+
 
 JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STBeautifyNative_createInstance(JNIEnv * env, jobject obj)
 {
@@ -269,3 +269,5 @@ JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STBeautifyNative_destroyBeaut
     st_mobile_beautify_destroy(handle);
     return JNI_TRUE;
 }
+
+};

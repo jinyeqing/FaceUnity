@@ -11,4 +11,6 @@ public interface IPreprocessor {
     int getType();
     void initPreprocessor();
     void releasePreprocessor();
+
+    Object getEffectRenderer();
 }

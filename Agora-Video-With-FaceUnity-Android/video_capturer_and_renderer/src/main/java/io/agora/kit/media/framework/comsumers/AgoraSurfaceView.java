@@ -5,8 +5,6 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 
 import io.agora.kit.media.framework.VideoModule;
-import io.agora.kit.media.framework.channels.ChannelManager;
-import io.agora.kit.media.framework.channels.VideoChannel;
 
 public class AgoraSurfaceView extends SurfaceView {
     private SurfaceViewConsumer mConsumer;
@@ -22,20 +20,16 @@ public class AgoraSurfaceView extends SurfaceView {
     }
 
     private void init() {
-        VideoModule.instance().setContext(getContext().getApplicationContext(),
-                ChannelManager.ChannelID.CAMERA);
-        connect();
+        setConsumer();
     }
 
-    public void connect() {
+    private void setConsumer() {
         mConsumer = new SurfaceViewConsumer(VideoModule.instance());
         mConsumer.setSurfaceView(this);
-        mConsumer.surfaceCreated(getHolder());
         getHolder().addCallback(mConsumer);
     }
 
     public void disconnect() {
-        // mConsumer.disconnectChannel(ChannelManager.ChannelID.CAMERA);
         mConsumer.surfaceDestroyed(getHolder());
         mConsumer.setSurfaceView(null);
         getHolder().removeCallback(mConsumer);

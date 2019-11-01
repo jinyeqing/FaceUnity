@@ -3,7 +3,6 @@ package io.agora.kit.media.framework.comsumers;
 import android.opengl.EGLSurface;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
-import android.util.Log;
 
 import io.agora.kit.media.capture.VideoCaptureFrame;
 import io.agora.kit.media.gles.core.EglCore;
@@ -21,7 +20,8 @@ public abstract class BaseWindowConsumer implements IVideoConsumer {
     protected VideoChannel videoChannel;
 
     private EGLSurface drawingEglSurface;
-    protected volatile boolean shouldCreateDrawingSurface = true;
+    protected volatile boolean initialized;
+    protected volatile boolean destroyed;
     private float[] mMVPMatrix = new float[16];
     private boolean mMVPInit;
 
@@ -45,9 +45,13 @@ public abstract class BaseWindowConsumer implements IVideoConsumer {
     }
 
     private void drawFrame(VideoCaptureFrame frame, ChannelContext context) {
+        if (destroyed) {
+            return;
+        }
+
         EglCore eglCore = context.getEglCore();
 
-        if (shouldCreateDrawingSurface) {
+        if (!initialized) {
             if (drawingEglSurface != null) {
                 eglCore.releaseSurface(drawingEglSurface);
                 eglCore.makeNothingCurrent();
@@ -55,7 +59,7 @@ public abstract class BaseWindowConsumer implements IVideoConsumer {
             }
 
             drawingEglSurface = eglCore.createWindowSurface(onGetDrawingTarget());
-            shouldCreateDrawingSurface = false;
+            initialized = true;
         }
 
         if (!eglCore.isCurrent(drawingEglSurface)) {
@@ -74,11 +78,9 @@ public abstract class BaseWindowConsumer implements IVideoConsumer {
         }
 
         if (frame.mFormat.getPixelFormat() == GLES20.GL_TEXTURE_2D) {
-            Log.i("BaseWindowConsumer", "draw texture2d");
             context.getProgram2D().drawFrame(
                     frame.mTextureId, frame.mTexMatrix, mMVPMatrix);
         } else if (frame.mFormat.getPixelFormat() == GLES11Ext.GL_TEXTURE_EXTERNAL_OES) {
-            Log.i("BaseWindowConsumer", "draw textureOES");
             context.getProgramOES().drawFrame(
                     frame.mTextureId, frame.mTexMatrix, mMVPMatrix);
         }

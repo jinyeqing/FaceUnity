@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
 
 import com.sensetime.effects.view.FilterItem;
 import com.sensetime.effects.view.MakeupItem;
@@ -15,6 +16,8 @@ import com.sensetime.sensearsourcemanager.SenseArMaterial;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +38,9 @@ import java.util.TreeMap;
 import sensetime.com.effects.R;
 
 public class FileUtils {
+    private static final int DEFAULT_BUFFER_SIZE = 256;
+    private static final byte[] DEFAULT_READ_BUFFER = new byte[256];
+
     public static final String MODEL_NAME_ACTION = "M_SenseME_Face_Video_5.3.3.model";
     public static final String MODEL_NAME_FACE_ATTRIBUTE = "M_SenseME_Attribute_1.0.1.model";
     public static final String MODEL_NAME_EYEBALL_CENTER = "M_Eyeball_Center.model";
@@ -529,7 +535,6 @@ public class FileUtils {
         File dataDir = context.getExternalFilesDir(null);
         if (dataDir != null) {
             folderpath = dataDir.getAbsolutePath() + File.separator + index;
-
             File folder = new File(folderpath);
 
             if (!folder.exists()) {
@@ -861,5 +866,72 @@ public class FileUtils {
         }
 
         return  makeupFiles;
+    }
+
+    /**
+     * Check if the data directory has already have the file
+     * of the relative path. If not, copy file from asset folders.
+     * @param context context
+     * @param path file path relative to root path. The root path may be
+     *             the asset root path, or Data dir path
+     * @return absolute path of the file
+     */
+    public static String copyToDataFromAssetIfNotExist(Context context, String path) {
+        // Copy to the root of the files directory
+        File fileDir = context.getExternalFilesDir(null);
+        File targetFile = new File(fileDir, path);
+
+        if (targetFile.exists()) {
+            return targetFile.getAbsolutePath();
+        }
+
+        try {
+            if (!targetFile.getParentFile().exists() &&
+                    !targetFile.getParentFile().mkdirs()) {
+                return null;
+            }
+
+            if (!targetFile.createNewFile()) {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        AssetManager am = context.getAssets();
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        try {
+            bis = new BufferedInputStream(am.open(path));
+            bos = new BufferedOutputStream(new FileOutputStream(targetFile));
+
+            int read;
+            while ((read = bis.read(DEFAULT_READ_BUFFER,
+                    0, DEFAULT_BUFFER_SIZE)) != -1) {
+                bos.write(DEFAULT_READ_BUFFER, 0, read);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.flush();
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return targetFile.getAbsolutePath();
     }
 }

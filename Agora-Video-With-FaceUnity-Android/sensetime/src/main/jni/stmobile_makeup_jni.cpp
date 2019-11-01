@@ -31,7 +31,6 @@ extern "C" {
     JNIEXPORT void JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_setSmoothStrengthForType(JNIEnv * env, jobject obj, jint type, jfloat value);
     JNIEXPORT void JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_setResourceForType(JNIEnv * env, jobject obj, jint type, jint packageId, jobject imageData);
     JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_destroyInstance(JNIEnv * env, jobject obj);
-};
 
 static inline jfieldID getMakeupHandleField(JNIEnv *env, jobject obj)
 {
@@ -146,9 +145,8 @@ JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_setMakeu
     long readSize = AAsset_read(asset, buffer, size);
     if (readSize != size) {
         AAsset_close(asset);
-        if(buffer){
+        if (buffer) {
             delete[] buffer;
-            buffer = NULL;
         }
 
         result = st_mobile_makeup_set_makeup_for_type(makeupHandle, (st_makeup_type)type, NULL, &packageId);
@@ -171,6 +169,8 @@ JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_setMakeu
         result = st_mobile_makeup_set_makeup_for_type_from_buffer(makeupHandle, (st_makeup_type)type, buffer, size, &packageId);
     }
 
+    LOGE("add makeup for type from assets");
+
     if(buffer){
         delete[] buffer;
         buffer = NULL;
@@ -181,6 +181,7 @@ JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_setMakeu
         return result;
     }
 
+    LOGE("add makeup for type from assets end");
     return packageId;
 }
 
@@ -293,7 +294,6 @@ JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_addMakeu
     if(result != 0){
         LOGE("add_makeup_for_type_from_buffer failed, %d",result);
     }
-
     return packageId;
 }
 
@@ -483,3 +483,5 @@ JNIEXPORT jint JNICALL Java_com_sensetime_stmobile_STMobileMakeupNative_destroyI
     st_mobile_makeup_destroy(handle);
     return ST_OK;
 }
+
+};

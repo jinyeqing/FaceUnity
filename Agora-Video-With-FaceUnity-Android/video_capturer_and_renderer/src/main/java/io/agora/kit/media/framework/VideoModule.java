@@ -5,14 +5,16 @@ import android.content.Context;
 import io.agora.kit.media.framework.channels.ChannelManager;
 import io.agora.kit.media.framework.channels.VideoChannel;
 import io.agora.kit.media.framework.comsumers.IVideoConsumer;
+import io.agora.kit.media.framework.preprocess.IPreprocessor;
 import io.agora.kit.media.framework.producers.IVideoProducer;
 
 public class VideoModule {
     private static final String TAG = VideoModule.class.getSimpleName();
 
     private static VideoModule mSelf;
-    private ChannelManager mChannelManager = new ChannelManager();
+    private ChannelManager mChannelManager;
 
+    //TODO May need a better way for singleton
     public static VideoModule instance() {
         if (mSelf == null) {
             mSelf = new VideoModule();
@@ -25,8 +27,13 @@ public class VideoModule {
 
     }
 
-    public void setContext(Context context, int channelId) {
-        mChannelManager.setContext(context, channelId);
+    /**
+     * Should be called globally once before any
+     * video channel APIs are called.
+     * @param context
+     */
+    public void init(Context context) {
+        mChannelManager = new ChannelManager(context);
     }
 
     public VideoChannel connectProducer(IVideoProducer producer, int id) {
@@ -59,5 +66,9 @@ public class VideoModule {
      */
     public void enableOffscreenMode(int channelId, boolean enabled) {
         mChannelManager.enableOffscreenMode(channelId, enabled);
+    }
+
+    public IPreprocessor getPreprocessor(int channelId) {
+        return mChannelManager.getPreprocessor(channelId);
     }
 }

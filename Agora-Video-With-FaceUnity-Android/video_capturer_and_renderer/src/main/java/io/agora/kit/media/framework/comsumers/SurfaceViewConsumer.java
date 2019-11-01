@@ -60,6 +60,6 @@ public class SurfaceViewConsumer extends BaseWindowConsumer implements SurfaceHo
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i(TAG, "surfaceDestroyed");
         disconnectChannel(CHANNEL_ID);
-        shouldCreateDrawingSurface = true;
+        destroyed = true;
     }
 }
